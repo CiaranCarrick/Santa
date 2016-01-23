@@ -27,20 +27,20 @@ public class Entities : MonoBehaviour {
 	// Use this for initialization
 
 	void Start () {
-		Colours[0,0] = Color.red;//Store our colours in a 2D array 
+		Colours[0,0] = Color.red;//Store our colours in a 2D array, 2nd can be used for unique present wrapping!
 		Colours[0,1] = Color.cyan;
 		
 		Colours[1,0] = Color.blue;//
-		Colours[1,1] = Color.magenta;
+		Colours[1,1] = Color.white;
 		
 		Colours[2,0] = Color.green;//
 		Colours[2,1] = Color.white;
 		
 		Colours[3,0] = Color.cyan;//
-		Colours[3,1] = Color.green;
+		Colours[3,1] = Color.white;
 		
 		Colours[4,0] = Color.yellow;//
-		Colours[4,1] = Color.green;
+		Colours[4,1] = Color.magenta;
 
 		score = 0;
 		CreateSanta ();
@@ -85,11 +85,12 @@ public class Entities : MonoBehaviour {
 		GameObject presents = GameObject.CreatePrimitive (PrimitiveType.Cube);// Gameobjects are cubes
 		presents.AddComponent<Presents> ();//Add the Presents script to each gameobject
 		Presents toys = presents.GetComponent<Presents>();//Create instance of Presents called toys
+		float scale = Random.Range(0.5f, 0.75f);
 		float _x = santa.transform.position.x;//Set starting position to Santa gameobject position
 		float _y = santa.transform.position.y;//
 		int c = Random.Range(0,5);//Create a random value from 0,5
-		Color col = Colours[c,0];//col choose a random number in the Colours 2D array
-		toys.Setpresents(_x, _y,xScale, yScale, 0.15f, col);//List of parameters
+		toys.Setpresents(_x, _y,scale, scale, 0.15f, Colours[c,0], Colours[c,1]);//List of parameters, Colours[c,0] referances the 1st row,Colours[c,1] the 2nd row of colours
+		//So for e.g if c=2 we get a blue present [3,0] with white wrapping [3,1] if c=0 we get a red present [0,0] with cyan wrapping [0,1]
 	}
 
 	public void CreateParticles(Vector3 pos){

@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Presents : Entities {
-
+	Color colorWrapping;
 	//Constructor
-	public void Setpresents(float _x, float _y, float _xScale, float _yScale, float _speed, Color _col){
+	public void Setpresents(float _x, float _y, float _xScale, float _yScale, float _speed, Color _col,Color _colorWrapping){
 		name = "Present";
 		xPos = _x;
 		yPos = _y;
@@ -12,13 +12,33 @@ public class Presents : Entities {
 		yScale = _yScale;
 		speed = _speed;
 		color = _col;
-		Vector3 newPos = new Vector3(xPos, yPos, 0f);//Create local variable and set to constructor value
+		colorWrapping = _colorWrapping;
+
+		Vector3 newPos = new Vector3(xPos, yPos, -0.3f);//Create local variable and set to constructor value
 		transform.position = newPos;//Cache position
-		Vector3 newscale = new Vector3 (Random.Range(0.40f, 0.50f), Random.Range(0.20f, 0.60f), 1.1f);
+		Vector3 newscale = new Vector3 (xScale, yScale, 0.5f);//Random.Range(0.40f, 0.50f), Random.Range(0.20f, 0.60f)
 		transform.localScale = newscale;//Cache scale
 		GetComponent<Renderer>().material.color = color;// Set color
-		//Color newcolour = new Color(Random.Range(0.01f, 1f), Random.Range(0.01f, 1f),Random.Range(0.01f, 1f), 255);
-		//GetComponent<Renderer>().material.color = newcolour;
+
+		//Vertical Wrapping, this will serve as the wrapping for the present
+		GameObject vert = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		vert.name = "W_Vert";
+		Vector3 vert_scale = new Vector3(xScale*0.3f, yScale*1.0f, 0.1f);
+		Vector3 vertPos = new Vector3(transform.position.x, transform.position.y, transform.position.z-0.25f);
+		vert.transform.position = vertPos;
+		vert.transform.localScale = vert_scale;
+		vert.GetComponent<Renderer>().material.color = colorWrapping; // ColourWrapping is referancing a variable in the entity CretePresent method 
+		vert.transform.parent = transform;//Parent vert gamebject to Present gameobject							  //that chooses a random colour from the 2nd row of the Colours Array
+
+		//Horzizontal Wrapping
+		GameObject Horz = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		vert.name = "W_Horz";
+		Vector3 Horz_scale = new Vector3(xScale*1f, yScale*0.3f, 0.1f);
+		Vector3 HorzPos = new Vector3(transform.position.x, transform.position.y, transform.position.z-0.25f);
+		Horz.transform.position = HorzPos;//Cache
+		Horz.transform.localScale = Horz_scale;//Cache
+		Horz.GetComponent<Renderer>().material.color = colorWrapping; //assign colourwrapping
+		Horz.transform.parent = transform;//Parent vert gamebject to Present gameobject
 	}
 
 	// Use this for initialization
