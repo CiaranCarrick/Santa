@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Entities : MonoBehaviour {
 	//Inheritance
-	protected static Color[,] Colours = new Color[5,2];// only availible in this or inherited classes
+	protected static Color[,] Colours = new Color[5,2];// 2D Array, only availible in this or inherited classes
 
 	public static List<GameObject> chimneys = new List<GameObject>();//List to store chimneys
 	public float xPos;//Variables used across all child classes of Entities
@@ -42,17 +42,19 @@ public class Entities : MonoBehaviour {
 		Colours[4,0] = Color.yellow;//
 		Colours[4,1] = Color.magenta;
 
-		score = 0;
+		score = 0; //Set score to 0 from start
 		CreateSanta ();
 		CreateSnow ();
-		InvokeRepeating("CreateChimneys", 0.8f, 1.5f);// Repeatedly calls Createchimneys function
+		InvokeRepeating("CreateChimneys", 0.8f, 1.5f);// Repeatedly calls CreateChimneys function
 
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.Space)){
-			CreatePresents();
+		if(Input.GetKeyDown(KeyCode.Space)){ // If space is press
+			if (santa) { //Only while santa is not null
+				CreatePresents (); //Call CreatePresents Method
+			}
 		}
 	}
 	//Create Santa GameObject
@@ -73,11 +75,14 @@ public class Entities : MonoBehaviour {
 	}
 
 	void CreateSnow(){
+		GameObject empty = new GameObject ();//Clean up hierachy
+		empty.name="Snow";
 		for (int i = 0; i<=20; i++) {
 			GameObject snow = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 			snow.AddComponent<Snow> ();
 			Snow snowflakes = snow.GetComponent<Snow> ();
 			snowflakes.Setsnow (Random.Range(screenLeft, screenRight), Random.Range(screenBottom, screenTop), Random.Range(0.05f,0.1f), Random.Range(0.05f,0.1f), 0f, 0.1f);
+			snow.transform.parent = empty.transform;
 		}
 	}
 
